@@ -45,7 +45,7 @@
     let urlsArray= URLs.value.split('\n');//je split les url avec le retour à la ligne
     let b64Array = [];
     urlsArray.forEach(url => {//pour chaque url
-      b64Array.push({uurl: url, b64: `&lt;span class='qcd' data-qcd='${inputEncode(url.trim())}'&gt;Ancre à changer123&lt;/span&gt;`});//je rajotue une entrée au tableau correspodant au span avec le b64
+      b64Array.push({uurl: url, b64: `&lt;span class='qcd' data-qcd='${inputEncode(url.trim())}'&gt;Ancre à changer&lt;/span&gt;`});//je rajotue une entrée au tableau correspodant au span avec le b64
     });
     
     //on injecte dans la balise tbody pour chaque iteration du tableau 
