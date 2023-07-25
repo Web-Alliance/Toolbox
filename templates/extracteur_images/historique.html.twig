@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spinnerman : du Français à l'anglais, le tout spinné
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/css/historique.css')}}" rel="stylesheet"/>
+
+{% endblock %}
+{% block titre %}
+	<h1 class="text-center">Extraction des images d'articles wordpress - Historique</h1>
+{% endblock %}
+{% block body %}
+
+	<h2 class="text-center font-italic mb-5">Ici on récupère les médias attachés aux articles d'un Wordpress</h2>
+
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link " href="{{path('app_extracteur_images')}}">Extraire des images</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link active" href="{{path('app_extracteur_historique')}}">Historique</a>
+		</li>
+	</ul>
+
+	<div class="filterContainer text-center">
+		<div>
+			<div id="searchForm">
+				<form action="">
+					<input type="text" name="rechercher" id="rechercher">
+					<input type="submit" class="btn btn-sm btn-primary allWaButton" value="Chercher un site">
+				</form>
+			</div>
+			<form action="" class="d-flex justify-content-center align-items-center flex-wrap">
+				<div>
+					<span>Trier par :</span>
+					<div class="filterInputContainer">
+						<div>
+							<label for="date">Date</label>
+							<input type="checkbox" name="date" id="date" {% if app.request.get('date')%} checked {% endif %}>
+						</div>
+						<div>
+							<label for="site">Site</label>
+							<input type="checkbox" name="site" id="site" {% if app.request.get('site')%} checked {% endif %}>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<input type="submit" value="Mettre à jour le filtre" class="btn btn-sm btn-primary allWaButton">
+				</div>
+			</form>
+		</div>
+		<button class="btn btn-sm btn-primary allWaButton ">
+			<a class="text-white" href="/extracteur-images/historique/">Réinitialiser recherche et filtres</a>
+		</button>
+	</div>
+
+	{% if is_mobile() or is_tablet() %}
+		{% for fichier in fichiers %}
+			<div class="card m-auto mb-4" style="width: 18rem;">
+				<div class="card-body text-center">
+					<h5 class="card-title">{{ fichier.site.nom }}
+						({{ fichier.site.url }})</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{ fichier.Date.date|date("d/m/Y") }}</h6>
+					<p class="card-text">{{ fichier.type }}</p>
+					<a href="/assets/uploads/{{ fichier.type }}s/{{ fichier.nom_bdd }}" class="card-link">{{ fichier.nom_pour_utilisateur }}</a>
+					<i class="fa-sharp fa-solid fa-circle-xmark clickIcon deleteBtn" data-link="{{ path('app_spinnerman_filesupp', {id : fichier.id})}}" data-delnom="{{fichier.nom_pour_utilisateur}}" data-delsite="{{fichier.site.nom}}" title="supprimer"></i>
+				</div>
+			</div>
+		{% endfor %}
+	{% else %}
+		<table id="historique-table">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Site</th>
+					<th>Url</th>
+					<th>Type</th>
+					<th>Fichier</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for fichier in fichiers %}
+					<tr>
+						<td>{{ fichier.Date.date|date("d/m/Y") }}</td>
+						<td>{{ fichier.site.nom }}</td>
+						<td>{{ fichier.site.url }}</td>
+						<td>{{ fichier.type }}</td>
+						<td>
+							<a href="/assets/uploads/{{ fichier.type }}_files/{{ fichier.nom_bdd }}" download>{{ fichier.nom_pour_utilisateur }}</a>
+							<i class="fa-sharp fa-solid fa-circle-xmark clickIcon deleteBtn" data-link="{{ path('app_extracteur-images_filesupp', {id : fichier.id})}}" data-delnom="{{fichier.nom_pour_utilisateur}}" data-delsite="{{fichier.site.nom}}" title="supprimer"></i>
+
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+	<div class="col-12 text-center">
+		{% if previous >= 0 %}
+			<a href="{{ path('app_spinnerman_historique', {offset: previous}) }}" class="btn btn-sm btn-primary m-0 allWaButton">
+				previous
+			</a>
+		{% endif %}
+
+		{% if pageActuelle <= 3 %}
+			{%if pageActuelle > 1 %}
+				{% for i in 2..pageActuelle %}
+					<a href="{{ path('app_spinnerman_historique', {offset: previous - (offset * (pageActuelle - i)), date: app.request.query.get("date"), site: app.request.query.get("site") , type : app.request.get('type')})}}" class="btn btn-sm btn-primary m-3 allWaButton">{{ i - 1 }}</a>
+				{% endfor %}
+			{% endif %}
+		{% else %}
+			{% for i in pageActuelle-2..pageActuelle %}
+				<a href="{{ path('app_spinnerman_historique', {offset: previous - (offset * (pageActuelle - i)) , date: app.request.query.get("date"), site: app.request.query.get("site"), type : app.request.get('type')})}}" class="btn btn-sm btn-primary m-3 allWaButton">{{ i - 1 }}</a>
+			{% endfor %}
+		{% endif %}
+
+
+		<span class="btn btn-sm btn-primary m-3 bg-warning">
+			{{ pageActuelle }}</span>
+
+
+		{% if difPages < 3 %}
+			{% if  difPages > 0 %}
+				{% for i in 1..difPages %}
+					<a href="{{ path('app_spinnerman_historique', {offset: next + (offset * (i - 1)) , date: app.request.query.get("date"), site: app.request.query.get("site"), type : app.request.get('type')}) }}" class="btn btn-sm btn-primary m-3 allWaButton">{{ pageActuelle + i }}</a>
+				{% endfor %}
+			{% endif %}
+		{% else %}
+			{% for i in 1..3 %}
+				<a href="{{ path('app_spinnerman_historique', {offset: next + (offset * (i - 1)) , date: app.request.query.get("date"), site: app.request.query.get("site"), type : app.request.get('type')}) }}" class="btn btn-sm btn-primary m-3 allWaButton">{{ pageActuelle + i }}</a>
+			{% endfor %}
+		{% endif %}
+
+		{% if next < fichiers|length %}
+			<a href="{{ path('app_spinnerman_historique', {offset: next , date: app.request.query.get("date"), site: app.request.query.get("site"), type : app.request.get('type')}) }}" class="btn btn-sm btn-primary m-0 allWaButton">next
+			</a>
+		{% endif %}
+
+		<p>{{ pageActuelle }}
+			/
+			{{ nbrePages }}</p>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+	<script>
+		let deleteBtn = document.querySelectorAll('.deleteBtn');
+
+deleteBtn.forEach((btn) => {
+btn.addEventListener('click', () => {
+let supp = window.prompt(`Pour valider la suppression de ${
+btn.dataset.delnom
+} concernant le site ${
+btn.dataset.delsite
+} tapez "Suppression"`, "")
+if (supp == "Suppression") {
+window.location.replace(btn.dataset.link);
+}
+})
+
+});
+	</script>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+/*********************************************************************Accordion***********************************************************/
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .accordion:hover {
+    background-color: #ccc;
+  }
+  
+  /* Style the accordion panel. Note: hidden by default */
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+  }
+
+  section {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .clickIcon{
+    cursor: pointer;
+  }
+  tr {
+    border: 1px solid black;
+  }
+
+  td, th {
+    padding: 20px;
+    text-align: center;
+  }
+
+  #addCollab{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap : wrap;
+  }
+
+  #addCollab div{
+    padding: 10px;
+    display: flex ;
+    align-items: center;
+    flex-wrap : wrap;
+
+  }
+
+  .deleteBtn:hover {
+    color:red;
+  }
+
+.updateIcon:hover{
+  color:orange;
+}
+
+#updtCollab{
+  display: flex;
+  flex-wrap : wrap;
+  justify-content: center;
+}
+
+#users_update_form_email{
+  width: 300px;
+}
+
+#updtCollab div {
+  margin: 15px;
+}
+@media screen and (max-width : 700px){
+  #addCollab div{
+    justify-content: center;
+    flex-direction: column;
+  }
+  h2{
+    text-align: center;
+  }
+
+  .modal-content{
+    width: 90% !important;
+  }
+}

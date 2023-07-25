@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>
+			{% block title %}Toolbox - WebAlliance
+			{% endblock %}
+		</title>
+		<link rel="icon" href="{{ asset('assets/img/logo/logo-wa.ico')}}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ asset('assets/css/material-dashboard.css')}}" />
+		<link rel="stylesheet" href="{{ asset('assets/css/common.css')}}" />
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+
+	</head>
+
+	<body class="g-sidenav-show  bg-gray-100 w-100 ">
+
+		<nav class=" col-lg-12 d-flex d-lg-block p-2 justify-content-end align-items-end" style="text-align: right;">
+			<ul class="d-none d-lg-flex text-black-50 fw-bold justify-content-end fs-5 mt-3 ">
+				<li class="nav-item d-flex align-items-center">
+					<a href="{{ path('app_logout') }}" class="nav-link text-body font-weight-bold px-0">
+						<i class="d-sm-inline d-none fa fa-sign-out " id="logoutIcon" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+
+			<a class="nav-link dropdown-toggle d-lg-none text-primary" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list text-primary" viewbox="0 0 16 16">
+					<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+				</svg>
+			</a>
+
+			<ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_dashboard_accueil')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_dashboard_accueil') ? 'currentMenuSelected' : ''}}">Accueil</span>
+
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_spinnerman')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_spinnerman') ? 'currentMenuSelected' : ''}}">Spinnerman</span>
+
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_extracteur_images')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_extracteur_images') ? 'currentMenuSelected' : ''}}">Extrac-Thor</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_plugins')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_plugins') ? 'currentMenuSelected' : ''}}">Plugins</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_sites')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_sites') ? 'currentMenuSelected' : ''}}">Sites</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_b64')}}">
+						<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_b64') ? 'currentMenuSelected' : ''}}">Convertisseur B'Hulk 64</span>
+					</a>
+				</li>
+				{% if app.user.roles[0] == "ROLE_ADMIN" %}
+					<li class="nav-item">
+						<a class="nav-link text-primary justify-content-center" href="{{path('app_administration')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_administration') ? 'currentMenuSelected' : ''}}">Administration</span>
+						</a>
+					</li>
+				{% endif %}
+				<li class="nav-item d-flex align-items-center">
+					<a class="nav-link text-primary justify-content-center" href="{{path('app_logout')}}">
+						<span class="nav-link-text ms-1">Deconnexion</span>
+					</a>
+
+				</li>
+			</ul>
+
+		</nav>
+		<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+
+			<div class="sidenav-header">
+				<a class="navbar-brand m-0 text-center" href="{{path('app_dashboard_accueil')}}">
+					<img src="{{ asset('assets/img/logo/logo-wa-transparent.png')}}" class="navbar-brand-img " id="logoHome" alt="main_logo">
+				</a>
+			</div>
+
+			<hr class="horizontal light mt-0 mb-2">
+
+			<div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+				<ul class="navbar-nav">
+
+					<li class="nav-item">
+						<a class="nav-link text-white justify-content-center" href="{{path('app_spinnerman')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_spinnerman') ? 'currentMenuSelected' : ''}}">Spinnerman</span>
+
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white justify-content-center" href="{{path('app_extracteur_images')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_extracteur_images') ? 'currentMenuSelected' : ''}}">Extrac-Thor</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white justify-content-center" href="{{path('app_plugins')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_plugins') ? 'currentMenuSelected' : ''}}">Plugins</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white justify-content-center" href="{{path('app_sites')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_sites') ? 'currentMenuSelected' : ''}}">Sites</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white justify-content-center" href="{{path('app_b64')}}">
+							<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_b64') ? 'currentMenuSelected' : ''}}">Convertisseur B'Hulk 64</span>
+						</a>
+					</li>
+
+					{% if app.user.roles[0] == "ROLE_ADMIN" %}
+						<li class="nav-item">
+							<a class="nav-link text-white justify-content-center" href="{{path('app_administration')}}">
+								<span class="nav-link-text ms-1" id="{{ (app.request.get('_route') == 'app_administration') ? 'currentMenuSelected' : ''}}">Administration</span>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</aside>
+		<div class="text-center"> 
+		<img src="{{ asset('assets/img/logo/logo_wa_couleur.png')}}" alt="" class="d-lg-none">
+		</div>
+		<main class="main-content border-radius-lg ">
+
+
+			<div class="col d-flex justify-content-between align-items-center navContainer bg-light  px-lg-3">
+				<div class="col-md-2 d-none d-lg-block"></div>
+
+
+				<div
+					class="container-fluid container-md py-4 px-md-5">
+					{# Contenu de la page en cours #}
+					{% block titre %}{% endblock %}
+					{% for message in app.session.flashBag.get('info')%}
+						<div class='alert alert-success'>
+							{{ message }}
+						</div>
+					{% endfor %}
+					{% for message in app.session.flashBag.get('wrong')%}
+						<div class='alert alert-danger'>
+							{{ message }}
+						</div>
+					{% endfor %}
+					{% block body %}{% endblock %}
+				</div>
+
+			</div>
+		</main>
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	</body>
+</html></body></html>
