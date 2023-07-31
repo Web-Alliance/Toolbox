@@ -71,7 +71,7 @@
   })
   
   URL.addEventListener("input", (e) => {
-    b64OneUrl.value = `<span class='qcd' data-qcd='${inputEncode(e.target.value)}'>Ancre à changer...</span>`;
+    b64OneUrl.value = `<span class='qcd' data-qcd='${inputEncode(e.target.value)}'>Ancre à changer</span>`;
   });
   
   b64OneUrl.addEventListener('click', () => {
